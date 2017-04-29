@@ -33,3 +33,7 @@ def sigmoid_grad(f):
     Computes the gradient for the sigmoid function 
     """
     return f * (1.0 - f)
+
+
+if __name__=='__main__':
+    print "i am at word2vec/functions.py", __file__
