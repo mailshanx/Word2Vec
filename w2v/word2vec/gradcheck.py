@@ -38,8 +38,9 @@ def gradcheck_naive(f, x):
             print "Gradient check failed."
             print "First gradient error found at index %s" % str(ix)
             print "Your gradient: %f \t Numerical gradient: %f" % (grad[ix], numgrad)
-            return
+            return False
 
         it.iternext()  # Step to next dimension
 
-    print "Gradient check passed!"
+    #print "Gradient check passed!"
+    return True

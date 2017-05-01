@@ -34,6 +34,7 @@ def sigmoid_grad(f):
     """
     return f * (1.0 - f)
 
-
-if __name__=='__main__':
-    print "i am at word2vec/functions.py", __file__
+def normalizeRows(x):
+    """ Row normalization function """
+    norm = np.sqrt(np.sum(x**2 , axis = 1))
+    return (x.T / norm).T

@@ -1,11 +1,13 @@
 import numpy as np
-from w2v.word2vec.functions import softmax, sigmoid, sigmoid_grad
+from w2v.word2vec.functions import softmax, sigmoid, sigmoid_grad, normalizeRows
 from w2v.word2vec.gradcheck import gradcheck_naive
 import unittest
 
 
 class FunctionsTests(unittest.TestCase):
-
+    """
+    Tests function definitions for softmax, sigmoid and normalize_rows in functions.py
+    """
     def test_softmax(self):
         """
         Testing the softmax implementation
@@ -42,9 +44,16 @@ class FunctionsTests(unittest.TestCase):
 
         self.assertLessEqual(np.amax(g - ans_g), 1e-6, msg="x: {}, g: {}, ans_g: {}".format(x, g, ans_g))
 
+    def test_normalize_rows(self):
+        x = normalizeRows(np.array([[3.0, 4.0], [1, 2]]))
+        # the result should be [[0.6, 0.8], [0.4472, 0.8944]]
+        self.assertEquals(x.all() == np.array([[0.6, 0.8], [0.4472, 0.8944]]).all(), True)
+
 
 class GradCheck(unittest.TestCase):
-
+    """
+    tests gradcheck_naive in gradcheck.py
+    """
     def setUp(self):
         self.quad  = lambda x: (np.sum(x ** 2), x * 2)
 
