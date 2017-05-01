@@ -38,3 +38,5 @@ def normalizeRows(x):
     """ Row normalization function """
     norm = np.sqrt(np.sum(x**2 , axis = 1))
     return (x.T / norm).T
+
+
