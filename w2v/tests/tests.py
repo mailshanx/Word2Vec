@@ -1,7 +1,9 @@
 import numpy as np
 from w2v.word2vec.functions import softmax, sigmoid, sigmoid_grad, normalizeRows
 from w2v.word2vec.gradcheck import gradcheck_naive
+from w2v.word2vec.word2vec import word2vec_sgd_wrapper, skipgram, cbow, negSamplingCostAndGradient
 import unittest
+import random
 
 
 class FunctionsTests(unittest.TestCase):
@@ -61,6 +63,51 @@ class GradCheck(unittest.TestCase):
         gradcheck_naive(self.quad, np.array(123.456))  # scalar test
         gradcheck_naive(self.quad, np.random.randn(3, ))  # 1-D test
         gradcheck_naive(self.quad, np.random.randn(4, 5))  # 2-D test
+
+
+class Word2Vec(unittest.TestCase):
+
+    def setUp(self):
+        self.dataset = type('dummy', (), {})()
+
+        def dummySampleTokenIdx():
+            return random.randint(0, 4)
+
+        def getRandomContext(C):
+            tokens = ["a", "b", "c", "d", "e"]
+            return tokens[random.randint(0, 4)], [tokens[random.randint(0, 4)] \
+                                                  for i in xrange(2 * C)]
+
+        self.dataset.sampleTokenIdx = dummySampleTokenIdx
+        self.dataset.getRandomContext = getRandomContext
+
+        random.seed(31415)
+        np.random.seed(9265)
+        self.dummy_vectors = normalizeRows(np.random.randn(10, 3))
+        self.dummy_tokens = dict([("a", 0), ("b", 1), ("c", 2), ("d", 3), ("e", 4)])
+
+    def test_word2vec_skipgram(self):
+        print "==== Gradient check for skip-gram ===="
+        self.assertTrue(gradcheck_naive(lambda vec: word2vec_sgd_wrapper(skipgram,
+                                        self.dummy_tokens, vec, self.dataset, 5),
+                                        self.dummy_vectors))
+        g_check = gradcheck_naive( lambda vec: word2vec_sgd_wrapper(skipgram, self.dummy_tokens, vec,
+                  self.dataset, 5, negSamplingCostAndGradient), self.dummy_vectors)
+        self.assertTrue(g_check)
+
+
+    def test_word2vec_cbow(self):
+        print "\n==== Gradient check for CBOW      ===="
+        g_check = gradcheck_naive(lambda vec: word2vec_sgd_wrapper(cbow, self.dummy_tokens, vec, self.dataset, 5),
+                        self.dummy_vectors)
+        self.assertTrue(g_check)
+
+        g_check = gradcheck_naive(lambda vec: word2vec_sgd_wrapper(cbow, self.dummy_tokens, vec,
+                        self.dataset, 5, negSamplingCostAndGradient),
+                        self.dummy_vectors)
+        self.assertTrue(g_check)
+
+
 
 if __name__=='__main__':
     unittest.main()
