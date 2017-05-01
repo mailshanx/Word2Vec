@@ -2,6 +2,7 @@ import numpy as np
 from w2v.word2vec.functions import softmax, sigmoid, sigmoid_grad, normalizeRows
 from w2v.word2vec.gradcheck import gradcheck_naive
 from w2v.word2vec.word2vec import word2vec_sgd_wrapper, skipgram, cbow, negSamplingCostAndGradient
+from w2v.word2vec.sgd import sgd
 import unittest
 import random
 
@@ -108,6 +109,24 @@ class Word2Vec(unittest.TestCase):
         self.assertTrue(g_check)
 
 
+class SGD(unittest.TestCase):
+
+    def setUp(self):
+        self.quad = lambda x: (np.sum(x ** 2), x * 2)
+
+    def test_SGD(self):
+        print "\n testing SGD implementation \n "
+        t1 = sgd(self.quad, 0.5, 0.01, 1000, PRINT_EVERY=100)
+        self.assertLessEqual(abs(t1), 1e-6)
+        print "====="
+
+        t2 = sgd(self.quad, 0.0, 0.01, 1000, PRINT_EVERY=100)
+        self.assertLessEqual(abs(t2), 1e-6)
+        print "====="
+
+        t3 = sgd(self.quad, -1.5, 0.01, 1000, PRINT_EVERY=100)
+        self.assertLessEqual(abs(t3), 1e-6)
+        print "\n end of testing SGD implementation \n"
 
 if __name__=='__main__':
     unittest.main()

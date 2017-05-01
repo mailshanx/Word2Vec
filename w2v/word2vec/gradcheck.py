@@ -3,7 +3,7 @@ import random
 
 def gradcheck_naive(f, x):
     """ 
-    Gradient check for a function f 
+    Implements a manual gradient check: this functions is used as a helper function in many places 
     - f should be a function that takes a single argument and outputs the cost and its gradients
     - x is the point (numpy array) to check the gradient at
     """
@@ -42,5 +42,5 @@ def gradcheck_naive(f, x):
 
         it.iternext()  # Step to next dimension
 
-    #print "Gradient check passed!"
+    print "Gradient check passed!"
     return True
