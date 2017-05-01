@@ -2,7 +2,9 @@ import numpy as np
 from w2v.word2vec.functions import softmax, sigmoid, sigmoid_grad, normalizeRows
 from w2v.word2vec.gradcheck import gradcheck_naive
 from w2v.word2vec.word2vec import word2vec_sgd_wrapper, skipgram, cbow, negSamplingCostAndGradient
-from w2v.word2vec.sgd import sgd
+from w2v.word2vec.sgd import sgd, load_saved_params
+from w2v.utils.utils import StanfordSentiment
+from w2v.sentiment.models import softmaxRegression, getSentenceFeature
 import unittest
 import random
 
@@ -127,6 +129,34 @@ class SGD(unittest.TestCase):
         t3 = sgd(self.quad, -1.5, 0.01, 1000, PRINT_EVERY=100)
         self.assertLessEqual(abs(t3), 1e-6)
         print "\n end of testing SGD implementation \n"
+
+class SentimentModels(unittest.TestCase):
+
+    def setUp(self):
+        random.seed(314159)
+        np.random.seed(265)
+
+        self.dataset = StanfordSentiment()
+        self.tokens = self.dataset.tokens()
+        self.nWords = len(self.tokens)
+
+        _, self.wordVectors0, _ = load_saved_params()
+        self.wordVectors = (self.wordVectors0[:self.nWords, :] + self.wordVectors0[self.nWords:, :])
+        self.dimVectors = self.wordVectors.shape[1]
+
+    def test_sentiment_models_softmax(self):
+        dummy_weights = 0.1 * np.random.randn(self.dimVectors, 5)
+        dummy_features = np.zeros((10, self.dimVectors))
+        dummy_labels = np.zeros((10,), dtype=np.int32)
+        for i in xrange(10):
+            words, dummy_labels[i] = self.dataset.getRandomTrainSentence()
+            dummy_features[i, :] = getSentenceFeature(self.tokens, self.wordVectors, words)
+        print "==== Gradient check for softmax regression ===="
+        g_check =  gradcheck_naive(lambda weights: softmaxRegression(dummy_features,
+                                        dummy_labels, weights, 1.0, nopredictions=True), dummy_weights)
+        self.assertTrue(g_check)
+
+
 
 if __name__=='__main__':
     unittest.main()

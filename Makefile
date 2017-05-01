@@ -1,4 +1,4 @@
-.PHONY: clean data lint #requirements #sync_data_to_s3 sync_data_from_s3
+.PHONY: clean 
 
 #################################################################################
 # GLOBALS                                                                       #
@@ -21,29 +21,19 @@ endif
 # COMMANDS                                                                      #
 #################################################################################
 
-## Install Python Dependencies
-# requirements: test_environment
-# 	pip install -r requirements.txt
 
-## Make Dataset
-data: requirements
-	$(PYTHON_INTERPRETER) src/data/make_dataset.py
+## 1-button to run sentiment analysis
+sentiment:
+	python -m w2v.sentiment.sentiment
+
+## 1-button to run tests
+tests:
+	python -m w2v.tests.tests
 
 ## Delete all compiled Python files
 clean:
 	find . -name "*.pyc" -exec rm {} \;
 
-## Lint using flake8
-# lint:
-# 	flake8 --exclude=lib/,bin/,docs/conf.py .
-
-## Upload Data to S3
-#sync_data_to_s3:
-#	aws s3 sync data/ s3://$(BUCKET)/data/
-
-## Download Data from S3
-#sync_data_from_s3:
-#	aws s3 sync s3://$(BUCKET)/data/ data/
 
 ## Set up python interpreter environment
 create_environment:
@@ -53,12 +43,8 @@ ifeq (False,$(HAS_CONDA))
 else
 	bash CondaEnv.sh $(CONDA_ENV_NAME)
 endif
-	@echo ">>> Activate Conda env with: \n source activate $(PROJECT_NAME)"
+	@echo ">>> Activate Conda env with: \n source activate $(CONDA_ENV_NAME)"
 	
-
-## Test python environment is setup correctly
-test_environment:
-	$(PYTHON_INTERPRETER) test_environment.py
 
 #################################################################################
 # PROJECT RULES                                                                 #

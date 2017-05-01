@@ -1,7 +1,7 @@
 Word2Vec
 ==============================
 
-A plain python implementation of WoWOrd2Vec with a sample application (sentiment analysis on the Stanford Sentiment Treebank), comparisons and benchmarking.
+A plain python implementation of Word2Vec with a sample application (sentiment analysis on the Stanford Sentiment Treebank), comparisons and benchmarking.
 
 Project Organization
 ------------
