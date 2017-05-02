@@ -23,9 +23,9 @@ make sentiment
 
 Other available Make rules:
 
-clean               Delete all compiled Python files
+clean:               Delete all compiled Python files
 
-tests               1 - button to run tests
+tests:               1 - button to run tests
 
 
 See project presentation / slides in docs/w2v_slides.pdf. See original word2vec paper and 
