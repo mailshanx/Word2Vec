@@ -1,4 +1,4 @@
-.PHONY: clean 
+.PHONY: clean tests
 
 #################################################################################
 # GLOBALS                                                                       #
@@ -21,13 +21,18 @@ endif
 # COMMANDS                                                                      #
 #################################################################################
 
+## 1 - button to train word vectors
+train_word2vec:
+	python -m w2v.sentiment.train_word_vectors
+	@echo ">>> Finished training word vectors"
 
-## 1-button to run sentiment analysis
-sentiment:
+## 1 - button to run sentiment analysis
+sentiment:  train_word2vec
 	python -m w2v.sentiment.sentiment
+	@echo ">>> Finished running sentiment analysis"
 
-## 1-button to run tests
-tests:
+## 1 - button to run tests
+tests: 
 	python -m w2v.tests.tests
 
 ## Delete all compiled Python files
