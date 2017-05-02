@@ -11,11 +11,13 @@ sentiment analysis on Stanford Sentiment Treebank dataset.
    source activate ws
 
 2. To run sentiment application, type: (Warning: can take a few hours the first time around, depending on your machine).
+Make sure you have a data and models folder.
 
 make sentiment
 
 
 3. To train word vectors, type: (Warning: can take a few hours the first time around, depending on your machine).
+Make sure you have a data and models folder.
 
    make train_word2vec
 
