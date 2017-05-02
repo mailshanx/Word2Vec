@@ -4,13 +4,18 @@ Word2Vec
 Word2vec implementation from scratch using only plain python. Comes with a demo application: 
 sentiment analysis on Stanford Sentiment Treebank dataset. 
 
+1. Setup your environment:
 
-To run project, type: (Warning: can take a few hours the first time around, depending on your machine).
+make create_environment
+
+source activate ws
+
+2. To run sentiment application, type: (Warning: can take a few hours the first time around, depending on your machine).
 
 make sentiment
 
 
-To train word vectors, type: (Warning: can take a few hours the first time around, depending on your machine).
+3. To train word vectors, type: (Warning: can take a few hours the first time around, depending on your machine).
 
 make train_word2vec
 
@@ -18,10 +23,12 @@ make train_word2vec
 Other available Make rules:
 
 clean               Delete all compiled Python files
-create_environment  Set up python interpreter environment
 tests               1 - button to run tests
 
 
+See project presentation / slides in docs/w2v_slides.pdf. See original word2vec paper and 
+Stanford Sentiment Treebank paper in references.
+ 
 
 Project Organization
 ------------
