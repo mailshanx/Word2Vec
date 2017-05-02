@@ -6,9 +6,9 @@ sentiment analysis on Stanford Sentiment Treebank dataset.
 
 1. Setup your environment:
 
-make create_environment
+   make create_environment
 
-source activate ws
+   source activate ws
 
 2. To run sentiment application, type: (Warning: can take a few hours the first time around, depending on your machine).
 
@@ -17,12 +17,14 @@ make sentiment
 
 3. To train word vectors, type: (Warning: can take a few hours the first time around, depending on your machine).
 
-make train_word2vec
+   make train_word2vec
+
 
 
 Other available Make rules:
 
 clean               Delete all compiled Python files
+
 tests               1 - button to run tests
 
 
